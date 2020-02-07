@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mapper">
+	<select id="select" resultType="loginDTO">
+		select * from login order by regdate
+	</select>
+	
+	<select id="selectOne" resultType="loginDTO" parameterType="loginDTO">
+		select * from login where id = #{id}
+	</select>
+	
+	<select id="selectOne_id" resultType="loginDTO" parameterType="String">
+		select * from login where id = #{id}
+	</select>
+	
+	<insert id="insert" parameterType="loginDTO">
+		insert into login values(#{id}, #{password}, #{name}, #{email}, #{photo}, default)	
+	</insert>
+	
+	<update id="update" parameterType="loginDTO">
+		
+	</update>
+	
+	<delete id="delete" parameterType="loginDTO">
+		
+	</delete>
+	
+</mapper>

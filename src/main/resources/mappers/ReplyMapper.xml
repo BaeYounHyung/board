@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="ReplyMapper">
+ 	<insert id="insert" parameterType="ReplyDTO">
+ 		insert into reply2 values(reply_num.nextval, #{num}, #{userid},#{content},default)
+ 	</insert>
+ 	<update id="update">
+ 		update reply2 set content=#{content}  
+ 		where rnum=#{rnum} 
+ 	</update>
+ 	<!-- 게시물의 모든댓글 삭제 -->
+ 	<delete id="delete">
+ 		delete from reply2 where num=#{num}
+ 	</delete>
+ 	<!-- 하나의 댓글 삭제 -->
+ 	<delete id="deleteOne">
+ 		delete from reply2 where rnum=#{rnum}
+ 	</delete>
+ 	<select id="selectList" resultType="ReplyDTO">
+ 		select * from reply2 where num = #{num} order by rnum
+ 	</select>
+ 	<select id="selectOne" resultType="ReplyDTO">
+ 		select * from reply2 where rnum = #{rnum} 
+ 	</select>
+ 	<select id="replyCount" resultType="int">
+ 		select count(*)c from reply2 where num =#{num}
+ 	</select>
+ </mapper>

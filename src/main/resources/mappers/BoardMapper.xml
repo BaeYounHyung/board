@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="BoardMapper">
+ 	<sql id="search">
+ 		<if test="searchKey=='userid'">
+ 			where userid like '%' || #{searchValue} || '%'
+ 		</if>
+ 		<if test="searchKey=='subject'">
+ 			where subject like '%' || #{searchValue} || '%'
+ 		</if>
+ 		<if test="searchKey=='content'">
+ 			where content like '%' || #{searchValue} || '%'
+ 		</if>
+ 		<if test="searchKey=='subcon'">
+ 			where subject like '%' || #{searchValue} || '%' or content like '%' || #{searchValue} || '%'
+ 		</if>
+ 	</sql>
+ 	<select id="selectList" resultType="BoardDTO">
+ 		select*from(select rownum r,a.* from(select * from board2 <include refid="search"/> order by num desc) a)where r BETWEEN #{startNo} and #{endNo}
+ 	</select>
+ 	<select id="selectOne" resultType="BoardDTO">
+ 		select * from board2 where num=#{num}
+ 	</select>
+ 	<select resultType="int" id="nav">
+ 		 select count(*) c from board2 <include refid="search"/>
+ 	</select>
+ 	<insert id="insert" parameterType="BoardDTO">
+ 		<selectKey keyProperty="num" resultType="int" order="BEFORE">
+ 			select board_num.nextval from dual
+ 		</selectKey>
+ 		insert into board2 values(#{num}, #{userid}, #{email},#{subject},#{content},default,default,default)
+ 	</insert>
+ 	<update id="update">
+ 		update board2 set email=#{email} , subject=#{subject} , content=#{content} 
+ 		where num=#{num} 
+ 	</update>
+ 	<delete id="delete">
+ 		delete from board2 where num=#{num}
+ 	</delete>
+ 	<update id="read">
+ 		update board2 set readcount = readcount+1 where num = #{num}
+ 	</update>
+ 	<update id="replyCountUp">
+ 		update board2 set replycount = replycount+1 where num = #{num}
+ 	</update>
+ 	<update id="replyCountDown">
+ 		update board2 set replycount = replycount-1 where num = #{num}
+ 	</update>
+ 	
+ 	
+ 
+ </mapper>
